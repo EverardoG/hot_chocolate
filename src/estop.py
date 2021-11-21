@@ -1,3 +1,5 @@
+#!/home/python_envs/ros-melodic/bin/python3
+
 # State ESTOP or DEFAULT
 # Subscribe to bumper to send robot into estop state
 # Subscribe to B0 to take robot out of estop state
