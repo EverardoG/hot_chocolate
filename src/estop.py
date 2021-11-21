@@ -26,7 +26,7 @@ class EStopNode():
         self.bumper_sub = rospy.Subscriber('/mobile_base/events/bumper', BumperEvent, self.bumper_callback)
         self.button_sub = rospy.Subscriber('/mobile_base/events/button', ButtonEvent, self.button_callback)
 
-        self.led_pub = rospy.Publisher('/mobile_base/commands/led1', Led)
+        self.led_pub = rospy.Publisher('/mobile_base/commands/led1', Led, queue_size=10)
 
         self.state = EStopState.DEFAULT.value
 
@@ -56,12 +56,10 @@ class EStopNode():
             # Update LED
             led_msg = Led()
             if self.state == EStopState.DEFAULT.value:
-                print("Default state")
                 led_msg.value = 1
             else:
                 twist_msg = Twist()
                 self.vel_pub.publish(twist_msg)
-                print("Estop state")
                 led_msg.value = 3
             self.led_pub.publish(led_msg)
             r.sleep()
