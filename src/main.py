@@ -10,6 +10,13 @@ class UpdateState(Enum):
     FOLLOW = 2
     DETECT = 3
 
+StateDict = {
+    UpdateState.DEFAULT.value: "DEFAULT",
+    UpdateState.WAIT.value: "WAIT",
+    UpdateState.FOLLOW.value: "FOLLOW",
+    UpdateState.DETECT.value: "DETECT"
+}
+
 class MainNode():
     def __init__(self):
         rospy.init_node('main')
@@ -33,12 +40,8 @@ class MainNode():
         self.TRACKER_present = False
         self.STOP_present = False
 
-        self.START_last_seen = None
-        self.TRACKER_last_seen = None
-        self.STOP_last_seen = None
-
         self.old_state = self.state
-        print ("Current State: ", self.state)
+        print ("Current State: ", StateDict[self.state])
         # If an arcuo tag is not detected within the specified wait time
         # after it was last detected, then the aruco marker is considered
         # no longer present
@@ -65,15 +68,11 @@ class MainNode():
         self.STOP_time = pose_msg.header.stamp
         return None
 
-    def update_sensors(self):
-        # Load camera frame into self.ret and self.frame
-        pass
-
     def update_state(self):
         # Update self.state of the robot given the current state
 
         if (self.state != self.old_state):
-            print ("Current State: ", self.state)
+            print ("Current State: ", StateDict[self.state])
         
         if (self.state == UpdateState.DEFAULT.value):
             if (self.START_present):
